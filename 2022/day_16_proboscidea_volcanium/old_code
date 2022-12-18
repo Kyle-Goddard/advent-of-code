@@ -1,0 +1,61 @@
+
+def recursive_search(current, time, valves, score):
+    if time <= 0:
+        return score
+
+    to_visit = []
+    time_penalty = []
+    if not valves[current].is_open:
+        to_visit.append(current)
+        time_penalty.append(1)
+
+    for c in valves[current].connects:
+        if not valves[c].is_open:
+            to_visit.append(c)
+            time_penalty.append(2)
+
+    for i in range(len(to_visit)):
+        valves[to_visit[i]].is_open = True
+        new_score = score.append(
+            Score(time - time_penalty[i], valves[to_visit[i]].rate)
+        )
+        recursive_search(
+            to_visit[i],
+            time - time_penalty[i],
+            valves,
+            new_score,
+        )
+
+    print(to_visit, time_penalty)
+
+
+# current = "AA"
+# time = 30
+# score = []
+
+# while time > 0:
+
+#     to_visit = []
+#     time_penalty = []
+#     potential_score = []
+#     if not valves[current].is_open:
+#         to_visit.append(current)
+#         time_penalty.append(1)
+#         potential_score.append(valves[current].rate * (time - time_penalty[-1]))
+
+#     for c in valves[current].connects:
+#         if not valves[c].is_open:
+#             to_visit.append(c)
+#             time_penalty.append(2)
+#             potential_score.append(valves[c].rate * (time - time_penalty[-1]))
+
+#     choice = potential_score.index(max(potential_score))
+
+#     current = to_visit[choice]
+#     valves[current].is_open = True
+
+#     penalty = time_penalty[choice]
+#     time -= penalty
+#     score.append(Score(time, valves[current].rate))
+
+# print(score)
